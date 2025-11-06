@@ -1,0 +1,6 @@
+title,location,start_time,end_time,expected_attendees,food_type,catering_company,latitude,longitude,notes
+Alumni Conference Luncheon,Student Center Ballroom,2025-01-15 12:00:00,2025-01-15 14:00:00,150,Buffet: sandwiches and salads,Campus Catering Services,40.7300,-73.9950,
+Faculty Meeting Dinner,Administration Building Room 301,2025-01-20 18:00:00,2025-01-20 20:00:00,50,Italian: pasta and salad,Bella Italia Catering,40.7350,-74.0000,
+Department Breakfast Meeting,Library Conference Room,2025-01-22 08:00:00,2025-01-22 09:30:00,30,Continental breakfast,Morning Glory Catering,40.7280,-73.9980,
+Student Organization Social,Campus Center Lounge,2025-01-25 17:00:00,2025-01-25 19:00:00,80,Pizza and wings,Quick Slice Catering,40.7310,-73.9960,
+Board of Trustees Reception,President's House,2025-01-28 19:00:00,2025-01-28 21:00:00,100,Hors d'oeuvres and desserts,Elegant Events Catering,40.7320,-73.9940,
