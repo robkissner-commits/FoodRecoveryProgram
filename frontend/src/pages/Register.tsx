@@ -103,7 +103,7 @@ export default function Register() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Role</label>
+            <label className="form-label">I want to be a...</label>
             <select
               name="role"
               className="form-control"
@@ -112,9 +112,9 @@ export default function Register() {
               required
               disabled={loading}
             >
-              <option value="reporter">Reporter</option>
-              <option value="driver">Driver</option>
-              <option value="partner">Partner</option>
+              <option value="reporter">Reporter (attend events and report food)</option>
+              <option value="driver">Driver (deliver recovered food)</option>
+              <option value="both">Both Reporter and Driver</option>
             </select>
           </div>
 

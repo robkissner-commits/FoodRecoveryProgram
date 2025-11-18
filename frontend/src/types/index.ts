@@ -1,4 +1,4 @@
-export type UserRole = 'admin' | 'reporter' | 'driver' | 'partner';
+export type UserRole = 'admin' | 'reporter' | 'driver' | 'both';
 
 export type EventStatus = 'scheduled' | 'assigned' | 'reported' | 'completed' | 'cancelled';
 

@@ -13,7 +13,7 @@ export async function register(req: Request, res: Response) {
     }
 
     // Validate role
-    const validRoles = ['admin', 'reporter', 'driver', 'partner'];
+    const validRoles = ['admin', 'reporter', 'driver', 'both'];
     if (!validRoles.includes(role)) {
       return res.status(400).json({ error: 'Invalid role' });
     }

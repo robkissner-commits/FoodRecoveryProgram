@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS partners CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 
 -- Create ENUM types
-CREATE TYPE user_role AS ENUM ('admin', 'reporter', 'driver', 'partner');
+CREATE TYPE user_role AS ENUM ('admin', 'reporter', 'driver', 'both');
 CREATE TYPE event_status AS ENUM ('scheduled', 'assigned', 'reported', 'completed', 'cancelled');
 CREATE TYPE recovery_status AS ENUM ('pending', 'assigned', 'picked_up', 'delivered', 'cancelled');
 CREATE TYPE need_level AS ENUM ('high', 'medium', 'low');
