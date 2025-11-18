@@ -52,7 +52,7 @@ export default function Register() {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h1 className="auth-title">Campus Food Recovery</h1>
+        <h1 className="auth-title">Iona Food Recovery Program</h1>
         <h2 style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#6b7280' }}>
           Create Account
         </h2>
