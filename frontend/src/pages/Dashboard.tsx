@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import AdminDashboard from '../components/dashboards/AdminDashboard';
 import ReporterDashboard from '../components/dashboards/ReporterDashboard';
 import DriverDashboard from '../components/dashboards/DriverDashboard';
-import PartnerDashboard from '../components/dashboards/PartnerDashboard';
+import BothDashboard from '../components/dashboards/BothDashboard';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -17,7 +17,7 @@ export default function Dashboard() {
       {user.role === 'admin' && <AdminDashboard />}
       {user.role === 'reporter' && <ReporterDashboard />}
       {user.role === 'driver' && <DriverDashboard />}
-      {user.role === 'partner' && <PartnerDashboard />}
+      {user.role === 'both' && <BothDashboard />}
     </div>
   );
 }

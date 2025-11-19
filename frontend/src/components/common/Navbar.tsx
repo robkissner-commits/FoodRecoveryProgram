@@ -14,7 +14,7 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <Link to="/" className="navbar-brand">
-        Campus Food Recovery
+        Iona Food Recovery Program
       </Link>
 
       <ul className="navbar-nav">

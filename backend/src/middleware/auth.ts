@@ -34,7 +34,15 @@ export function authorize(...roles: string[]) {
       return res.status(401).json({ error: 'Not authenticated' });
     }
 
-    if (!roles.includes(req.user.role)) {
+    // Check if user's role is in allowed roles
+    let hasPermission = roles.includes(req.user.role);
+
+    // If user has "both" role, allow access to reporter and driver routes
+    if (!hasPermission && req.user.role === 'both') {
+      hasPermission = roles.includes('reporter') || roles.includes('driver');
+    }
+
+    if (!hasPermission) {
       return res.status(403).json({ error: 'Insufficient permissions' });
     }
 

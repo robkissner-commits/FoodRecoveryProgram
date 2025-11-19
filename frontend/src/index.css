@@ -26,7 +26,7 @@ code {
 
 /* Navigation */
 .navbar {
-  background-color: #1f2937;
+  background-color: #7D1D3F;
   color: white;
   padding: 1rem 2rem;
   display: flex;
@@ -78,21 +78,21 @@ code {
 }
 
 .btn-primary {
-  background-color: #3b82f6;
+  background-color: #7D1D3F;
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: #2563eb;
+  background-color: #621630;
 }
 
 .btn-success {
-  background-color: #10b981;
-  color: white;
+  background-color: #FFC72C;
+  color: #1f2937;
 }
 
 .btn-success:hover {
-  background-color: #059669;
+  background-color: #e6b028;
 }
 
 .btn-danger {
@@ -175,8 +175,8 @@ code {
 
 .form-control:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #7D1D3F;
+  box-shadow: 0 0 0 3px rgba(125, 29, 63, 0.1);
 }
 
 .form-control.error {
@@ -299,7 +299,7 @@ textarea.form-control {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #7D1D3F 0%, #FFC72C 100%);
 }
 
 .auth-card {
