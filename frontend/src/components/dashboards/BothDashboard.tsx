@@ -19,7 +19,7 @@ export default function BothDashboard() {
           className={`btn ${activeTab === 'reporter' ? 'btn-primary' : 'btn-secondary'}`}
           style={{
             borderRadius: '0.375rem 0.375rem 0 0',
-            borderBottom: activeTab === 'reporter' ? '3px solid #3b82f6' : 'none'
+            borderBottom: activeTab === 'reporter' ? '3px solid #7D1D3F' : 'none'
           }}
         >
           Reporter View
@@ -29,7 +29,7 @@ export default function BothDashboard() {
           className={`btn ${activeTab === 'driver' ? 'btn-primary' : 'btn-secondary'}`}
           style={{
             borderRadius: '0.375rem 0.375rem 0 0',
-            borderBottom: activeTab === 'driver' ? '3px solid #3b82f6' : 'none'
+            borderBottom: activeTab === 'driver' ? '3px solid #7D1D3F' : 'none'
           }}
         >
           Driver View

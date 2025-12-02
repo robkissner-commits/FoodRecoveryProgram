@@ -1,40 +1,102 @@
-import React, { useState, useEffect } from 'react';
-import { dashboardAPI, eventsAPI, recoveriesAPI } from '../../services/api';
+import React, { useState } from 'react';
 import { Event } from '../../types';
 import { formatDateTime } from '../../utils/format';
 
+// Mock data for demo
+const mockAssignedEventsInitial: Event[] = [
+  {
+    id: 1,
+    title: 'Alumni Conference Luncheon',
+    location: 'Student Center Ballroom',
+    start_time: '2025-01-15T12:00:00',
+    end_time: '2025-01-15T14:00:00',
+    expected_attendees: 150,
+    food_type: 'Buffet: sandwiches and salads',
+    catering_company: 'Premier Catering',
+    contact_name: 'John Smith',
+    contact_email: 'jsmith@premier.com',
+    contact_phone: '555-1234',
+    status: 'assigned' as const,
+    created_at: '2025-01-01T10:00:00',
+  },
+  {
+    id: 3,
+    title: 'Student Organization Social',
+    location: 'Campus Center Lounge',
+    start_time: '2025-01-20T17:00:00',
+    end_time: '2025-01-20T19:00:00',
+    expected_attendees: 80,
+    food_type: 'Pizza and wings',
+    catering_company: "Joe's Pizza",
+    contact_name: 'Lisa Johnson',
+    contact_email: 'lisa@joespizza.com',
+    contact_phone: '555-7890',
+    status: 'assigned' as const,
+    created_at: '2025-01-02T14:00:00',
+  },
+];
+
+const mockAvailableEventsInitial: Event[] = [
+  {
+    id: 2,
+    title: 'Faculty Meeting Dinner',
+    location: 'Administration Building Room 301',
+    start_time: '2025-01-18T18:00:00',
+    end_time: '2025-01-18T20:00:00',
+    expected_attendees: 50,
+    food_type: 'Italian catering',
+    catering_company: "Antonio's Italian",
+    contact_name: 'Maria Garcia',
+    contact_email: 'maria@antonios.com',
+    contact_phone: '555-4567',
+    status: 'scheduled' as const,
+    created_at: '2025-01-02T09:00:00',
+  },
+  {
+    id: 4,
+    title: 'Board of Trustees Reception',
+    location: "President's House",
+    start_time: '2025-01-22T19:00:00',
+    end_time: '2025-01-22T21:00:00',
+    expected_attendees: 100,
+    food_type: "Hors d'oeuvres and desserts",
+    catering_company: 'Gourmet Events Co.',
+    contact_name: 'David Lee',
+    contact_email: 'david@gourmetevents.com',
+    contact_phone: '555-2345',
+    status: 'scheduled' as const,
+    created_at: '2025-01-03T11:00:00',
+  },
+  {
+    id: 5,
+    title: 'Graduate Program Open House',
+    location: 'Library Conference Center',
+    start_time: '2025-01-25T16:00:00',
+    end_time: '2025-01-25T18:00:00',
+    expected_attendees: 60,
+    food_type: 'Coffee, pastries, and finger foods',
+    catering_company: 'Morning Glory Bakery',
+    contact_name: 'Susan Williams',
+    contact_email: 'susan@morningglory.com',
+    contact_phone: '555-6789',
+    status: 'scheduled' as const,
+    created_at: '2025-01-04T08:00:00',
+  },
+];
+
 export default function ReporterDashboard() {
-  const [assignedEvents, setAssignedEvents] = useState<Event[]>([]);
-  const [availableEvents, setAvailableEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [assignedEvents, setAssignedEvents] = useState<Event[]>(mockAssignedEventsInitial);
+  const [availableEvents, setAvailableEvents] = useState<Event[]>(mockAvailableEventsInitial);
 
-  useEffect(() => {
-    fetchDashboard();
-  }, []);
-
-  const fetchDashboard = async () => {
-    try {
-      const response = await dashboardAPI.getReporter();
-      setAssignedEvents(response.data.assignedEvents || []);
-      setAvailableEvents(response.data.availableEvents || []);
-    } catch (error) {
-      console.error('Failed to fetch dashboard:', error);
-    } finally {
-      setLoading(false);
+  const handleAssignEvent = (eventId: number) => {
+    const event = availableEvents.find(e => e.id === eventId);
+    if (event) {
+      // Move event from available to assigned
+      setAvailableEvents(availableEvents.filter(e => e.id !== eventId));
+      setAssignedEvents([...assignedEvents, { ...event, status: 'assigned' as const }]);
+      alert('Event assigned successfully! You can now submit a recovery report after the event.');
     }
   };
-
-  const handleAssignEvent = async (eventId: number) => {
-    try {
-      await eventsAPI.assignReporter(eventId);
-      alert('Event assigned successfully!');
-      fetchDashboard();
-    } catch (error: any) {
-      alert(error.response?.data?.error || 'Failed to assign event');
-    }
-  };
-
-  if (loading) return <div className="loading">Loading dashboard...</div>;
 
   return (
     <div className="container">
@@ -62,14 +124,17 @@ export default function ReporterDashboard() {
                   <td>{event.location}</td>
                   <td>{formatDateTime(event.start_time)}</td>
                   <td>
-                    <span className="badge" style={{ backgroundColor: '#3b82f6', color: 'white' }}>
+                    <span className="badge" style={{ backgroundColor: '#7D1D3F', color: 'white' }}>
                       {event.status}
                     </span>
                   </td>
                   <td>
-                    <a href={`/report/${event.id}`} className="btn btn-primary btn-small">
+                    <button
+                      className="btn btn-primary btn-small"
+                      onClick={() => alert('In the full app, this would open a form to submit a recovery report with photos, food quantity, and description.')}
+                    >
                       Submit Report
-                    </a>
+                    </button>
                   </td>
                 </tr>
               ))}

@@ -1,49 +1,80 @@
-import React, { useState, useEffect } from 'react';
-import { dashboardAPI, eventsAPI } from '../../services/api';
-import { DashboardStats, Event } from '../../types';
+import React, { useState } from 'react';
 import { formatDateTime } from '../../utils/format';
 
+// Mock data for demo
+const mockStats = {
+  total_events: 24,
+  completed_deliveries: 18,
+  active_reporters: 12,
+  active_drivers: 8,
+};
+
+const mockUpcomingEvents = [
+  {
+    id: 1,
+    title: 'Alumni Conference Luncheon',
+    location: 'Student Center Ballroom',
+    start_time: '2025-01-15T12:00:00',
+    end_time: '2025-01-15T14:00:00',
+    expected_attendees: 150,
+    food_type: 'Buffet: sandwiches and salads',
+    reporter_name: 'Sarah Johnson',
+    status: 'assigned' as const,
+  },
+  {
+    id: 2,
+    title: 'Faculty Meeting Dinner',
+    location: 'Administration Building Room 301',
+    start_time: '2025-01-18T18:00:00',
+    end_time: '2025-01-18T20:00:00',
+    expected_attendees: 50,
+    food_type: 'Italian catering',
+    reporter_name: null,
+    status: 'scheduled' as const,
+  },
+  {
+    id: 3,
+    title: 'Student Organization Social',
+    location: 'Campus Center Lounge',
+    start_time: '2025-01-20T17:00:00',
+    end_time: '2025-01-20T19:00:00',
+    expected_attendees: 80,
+    food_type: 'Pizza and wings',
+    reporter_name: 'Mike Chen',
+    status: 'assigned' as const,
+  },
+  {
+    id: 4,
+    title: 'Board of Trustees Reception',
+    location: "President's House",
+    start_time: '2025-01-22T19:00:00',
+    end_time: '2025-01-22T21:00:00',
+    expected_attendees: 100,
+    food_type: 'Hors d\'oeuvres and desserts',
+    reporter_name: null,
+    status: 'scheduled' as const,
+  },
+];
+
 export default function AdminDashboard() {
-  const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
   const [csvFile, setCSVFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
-
-  useEffect(() => {
-    fetchDashboard();
-  }, []);
-
-  const fetchDashboard = async () => {
-    try {
-      const response = await dashboardAPI.getAdmin();
-      setStats(response.data.stats);
-      setUpcomingEvents(response.data.upcomingEvents || []);
-    } catch (error) {
-      console.error('Failed to fetch dashboard:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [uploadMessage, setUploadMessage] = useState('');
 
   const handleCSVUpload = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!csvFile) return;
 
     setUploading(true);
-    try {
-      await eventsAPI.uploadCSV(csvFile);
-      alert('Events uploaded successfully!');
-      setCSVFile(null);
-      fetchDashboard();
-    } catch (error: any) {
-      alert(error.response?.data?.error || 'Failed to upload CSV');
-    } finally {
-      setUploading(false);
-    }
-  };
+    setUploadMessage('');
 
-  if (loading) return <div className="loading">Loading dashboard...</div>;
+    // Simulate upload delay
+    setTimeout(() => {
+      setUploadMessage(`✓ Successfully imported ${Math.floor(Math.random() * 10) + 5} events from ${csvFile.name}`);
+      setCSVFile(null);
+      setUploading(false);
+    }, 1500);
+  };
 
   return (
     <div className="container">
@@ -52,19 +83,19 @@ export default function AdminDashboard() {
       <div className="stats-container">
         <div className="stat-card">
           <div className="stat-label">Total Events</div>
-          <div className="stat-value">{stats?.total_events || 0}</div>
+          <div className="stat-value" style={{ color: '#7D1D3F' }}>{mockStats.total_events}</div>
         </div>
         <div className="stat-card">
           <div className="stat-label">Completed Deliveries</div>
-          <div className="stat-value">{stats?.completed_deliveries || 0}</div>
+          <div className="stat-value" style={{ color: '#FFC72C' }}>{mockStats.completed_deliveries}</div>
         </div>
         <div className="stat-card">
           <div className="stat-label">Active Reporters</div>
-          <div className="stat-value">{stats?.active_reporters || 0}</div>
+          <div className="stat-value" style={{ color: '#7D1D3F' }}>{mockStats.active_reporters}</div>
         </div>
         <div className="stat-card">
           <div className="stat-label">Active Drivers</div>
-          <div className="stat-value">{stats?.active_drivers || 0}</div>
+          <div className="stat-value" style={{ color: '#FFC72C' }}>{mockStats.active_drivers}</div>
         </div>
       </div>
 
@@ -83,6 +114,11 @@ export default function AdminDashboard() {
               disabled={uploading}
             />
           </div>
+          {uploadMessage && (
+            <div style={{ padding: '0.75rem', backgroundColor: '#d1fae5', color: '#065f46', borderRadius: '0.375rem', marginBottom: '1rem' }}>
+              {uploadMessage}
+            </div>
+          )}
           <button type="submit" className="btn btn-primary" disabled={!csvFile || uploading}>
             {uploading ? 'Uploading...' : 'Upload CSV'}
           </button>
@@ -91,36 +127,40 @@ export default function AdminDashboard() {
 
       <div className="card">
         <div className="card-header">Upcoming Events</div>
-        {upcomingEvents.length === 0 ? (
-          <div className="empty-state">No upcoming events</div>
-        ) : (
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Event</th>
-                <th>Location</th>
-                <th>Date & Time</th>
-                <th>Reporter</th>
-                <th>Status</th>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Event</th>
+              <th>Location</th>
+              <th>Date & Time</th>
+              <th>Attendees</th>
+              <th>Reporter</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {mockUpcomingEvents.map((event) => (
+              <tr key={event.id}>
+                <td><strong>{event.title}</strong></td>
+                <td>{event.location}</td>
+                <td>{formatDateTime(event.start_time)}</td>
+                <td>{event.expected_attendees}</td>
+                <td>{event.reporter_name || <span style={{ color: '#ef4444' }}>Unassigned</span>}</td>
+                <td>
+                  <span
+                    className="badge"
+                    style={{
+                      backgroundColor: event.status === 'assigned' ? '#7D1D3F' : '#6b7280',
+                      color: 'white'
+                    }}
+                  >
+                    {event.status}
+                  </span>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {upcomingEvents.map((event) => (
-                <tr key={event.id}>
-                  <td>{event.title}</td>
-                  <td>{event.location}</td>
-                  <td>{formatDateTime(event.start_time)}</td>
-                  <td>{event.reporter_name || 'Unassigned'}</td>
-                  <td>
-                    <span className="badge" style={{ backgroundColor: event.status === 'assigned' ? '#3b82f6' : '#6b7280', color: 'white' }}>
-                      {event.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
